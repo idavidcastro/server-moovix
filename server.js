@@ -64,7 +64,17 @@ const resolvers = {
 const server = new ApolloServer({ typeDefs, resolvers });
 
 const { url } = await startStandaloneServer(server, {
-  listen: { port: PORT }, // Use the dynamic port variable
+  listen: { port: PORT },
+  cors: {
+    origin: [
+      // 1. Origen Local (para desarrollo)
+      "http://localhost:5174",
+      // 2. Origen de Render (si tienes un frontend desplegado)
+      "https://su-frontend.onrender.com",
+      // Puedes añadir más orígenes aquí si los necesitas
+    ],
+    credentials: true,
+  },
 });
 
 console.log(`🚀 Servidor GraphQL corriendo en: ${url}`);
