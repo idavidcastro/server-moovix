@@ -7,7 +7,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 4000;
 
-const BASE_URL = "https://api.themoviedb.org/3";
+const BASE_URL = "https://api.themoviedb.org/4";
 
 // 💡 Security Check: Ensure the API key is loaded
 if (!API_KEY) {
@@ -24,6 +24,7 @@ const typeDefs = `#graphql
     release_date: String
     poster_path: String
     vote_average: Float
+    backdrop_path: String
   }
 
   type Query {
