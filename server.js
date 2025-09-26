@@ -39,8 +39,9 @@ const resolvers = {
     popularMovies: async () => {
       const res = await fetch(
         // API_KEY is used here via the variable
-        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES`
+        `${BASE_URL}/account/${API_KEY}/movie/recommendations?page=1&language=en-US`
       );
+
       const data = await res.json();
       return data.results;
     },
