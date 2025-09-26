@@ -68,7 +68,7 @@ const { url } = await startStandaloneServer(server, {
   cors: {
     origin: [
       // 1. Origen Local (para desarrollo)
-      "http://localhost:5174",
+      "http://localhost:5173",
       // 2. Origen de Render (si tienes un frontend desplegado)
       "https://su-frontend.onrender.com",
       // Puedes añadir más orígenes aquí si los necesitas
