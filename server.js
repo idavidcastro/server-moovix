@@ -7,7 +7,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 4000;
 
-const BASE_URL = "https://api.themoviedb.org/4";
+const BASE_URL = "https://api.themoviedb.org/3";
 
 // 💡 Security Check: Ensure the API key is loaded
 if (!API_KEY) {
@@ -39,9 +39,8 @@ const resolvers = {
     popularMovies: async () => {
       const res = await fetch(
         // API_KEY is used here via the variable
-        `${BASE_URL}/account/${API_KEY}/movie/recommendations?page=1&language=en-US`
+        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES`
       );
-
       const data = await res.json();
       return data.results;
     },
