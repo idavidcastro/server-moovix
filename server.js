@@ -25,6 +25,13 @@ const typeDefs = `#graphql
     poster_path: String
     vote_average: Float
     backdrop_path: String
+    adult: String
+    genre_ids: [Int]
+    original_language: String
+    popularity: Float
+    video: Boolean
+    vote_count: Int
+    original_title: String
   }
 
   type Query {
