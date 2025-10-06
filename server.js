@@ -34,7 +34,13 @@ const typeDefs = `#graphql
     original_title: String
   }
 
+  type Genre {
+    id: Int
+    name: String
+  }
+
   type Query {
+    movieGenres: [Genre]
     popularMovies: [Movie]
     searchMovies(query: String!): [Movie]
     movieById(id: ID!): Movie
@@ -65,6 +71,13 @@ const resolvers = {
         `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
       );
       return res.json();
+    },
+    movieGenres: async () => {
+      const res = await fetch(
+        `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=es-ES`
+      );
+      const data = await res.json();
+      return data.genres;
     },
   },
 };
