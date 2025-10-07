@@ -17,6 +17,13 @@ if (!API_KEY) {
 }
 
 const typeDefs = `#graphql
+  type MovieVideo {
+    key: String
+    name: String
+    site: String
+    type: String
+  }
+
   type Movie {
     id: ID!
     title: String
@@ -44,6 +51,7 @@ const typeDefs = `#graphql
     popularMovies: [Movie]
     searchMovies(query: String!): [Movie]
     movieById(id: ID!): Movie
+    getMovieVideos(movieId: ID!): [MovieVideo]
   }
 `;
 
@@ -78,6 +86,13 @@ const resolvers = {
       );
       const data = await res.json();
       return data.genres;
+    },
+    getMovieVideos: async (_, { movieId }) => {
+      const res = await fetch(
+        `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`
+      );
+      const data = await res.json();
+      return data.results;
     },
   },
 };
