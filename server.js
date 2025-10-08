@@ -49,6 +49,7 @@ const typeDefs = `#graphql
     movieGenres: [Genre]
     popularMovies: [Movie]
     nowPlayingMovies: [Movie]
+    topRatedMovies: [Movie]
     searchMovies(query: String!): [Movie]
     movieById(id: ID!): Movie
     getMovieVideos(movieId: ID!): [MovieVideo]
@@ -68,6 +69,13 @@ const resolvers = {
     nowPlayingMovies: async () => {
       const res = await fetch(
         `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=es-ES`
+      );
+      const data = await res.json();
+      return data.results;
+    },
+    topRatedMovies: async () => {
+      const res = await fetch(
+        `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=es-ES`
       );
       const data = await res.json();
       return data.results;
