@@ -36,7 +36,6 @@ const typeDefs = `#graphql
     genre_ids: [Int]
     original_language: String
     popularity: Float
-    video: Boolean
     vote_count: Int
     original_title: String
   }
@@ -60,7 +59,7 @@ const resolvers = {
     popularMovies: async () => {
       const res = await fetch(
         // API_KEY is used here via the variable
-        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES`
+        `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=es-ES`
       );
       const data = await res.json();
       return data.results;
