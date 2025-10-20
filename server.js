@@ -52,7 +52,7 @@ const typeDefs = `#graphql
     topRatedMovies: [Movie]
     upcomingMovies: [Movie]
     searchMovies(query: String!): [Movie]
-    movieById(id: ID!): Movie
+    movieById(id: ID!): [Movie]
     getMovieVideos(movieId: ID!): [MovieVideo]
   }
 `;
@@ -129,7 +129,7 @@ const { url } = await startStandaloneServer(server, {
       // 1. Origen Local (para desarrollo)
       "http://localhost:5173",
       // 2. Origen de Render (si tienes un frontend desplegado)
-      "https://su-frontend.onrender.com",
+      // "https://su-frontend.onrender.com",
       // Puedes añadir más orígenes aquí si los necesitas
     ],
     credentials: true,
