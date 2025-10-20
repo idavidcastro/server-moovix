@@ -17,6 +17,23 @@ if (!API_KEY) {
 }
 
 const typeDefs = `#graphql
+  type Movie {
+  id: ID
+  title: String
+  overview: String
+  release_date: String
+  poster_path: String
+  backdrop_path: String
+  vote_average: Float
+  vote_count: Int
+  popularity: Float
+  adult: Boolean
+  genre_ids: [Int]
+  original_language: String
+  original_title: String
+}
+
+
   type CastMember {
     id: ID
     name: String
