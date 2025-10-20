@@ -24,6 +24,25 @@ const typeDefs = `#graphql
     type: String
   }
 
+  type CastMember {
+    id: ID
+    name: String
+    character: String
+    profile_path: String
+  }
+
+  type CrewMember {
+    id: ID
+    name: String
+    job: String
+    department: String
+  }
+
+  type MovieCredits {
+    cast: [CastMember]
+    crew: [CrewMember]
+  }
+
   type Movie {
     id: ID!
     title: String
@@ -54,6 +73,7 @@ const typeDefs = `#graphql
     searchMovies(query: String!): [Movie]
     movieById(id: ID!): Movie
     getMovieVideos(movieId: ID!): [MovieVideo]
+    movieCredits(id: ID!): MovieCredits
   }
 `;
 
@@ -116,6 +136,13 @@ const resolvers = {
       );
       const data = await res.json();
       return data.results;
+    },
+    movieCredits: async (_, { id }) => {
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=es-ES`
+      );
+      const data = await res.json();
+      return data; // ya tiene "cast" y "crew"
     },
   },
 };
