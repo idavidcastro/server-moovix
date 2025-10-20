@@ -38,7 +38,6 @@ const typeDefs = `#graphql
     popularity: Float
     vote_count: Int
     original_title: String
-    logo_path: String
   }
 
   type Genre {
@@ -62,6 +61,7 @@ const resolvers = {
   Query: {
     popularMovies: async () => {
       const res = await fetch(
+        // API_KEY is used here via the variable
         `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES`
       );
       const data = await res.json();
@@ -98,42 +98,10 @@ const resolvers = {
       return data.results;
     },
     movieById: async (_, { id }) => {
-      const [movieRes, imagesRes] = await Promise.all([
-        fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`),
-        fetch(`${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`),
-      ]);
-
-      const [movieData, imagesData] = await Promise.all([
-        movieRes.json(),
-        imagesRes.json(),
-      ]);
-
-      // Función para seleccionar el mejor logo
-      const getBestLogo = (logos) => {
-        if (!logos || logos.length === 0) return null;
-
-        // Primero intentamos encontrar un logo en español
-        let logo = logos.find((l) => l.iso_639_1 === "es");
-
-        // Si no hay en español, buscamos en inglés
-        if (!logo) {
-          logo = logos.find((l) => l.iso_639_1 === "en");
-        }
-
-        // Si no hay en español ni inglés, tomamos el que tenga mejor puntuación
-        if (!logo) {
-          logo = logos.sort((a, b) => b.vote_average - a.vote_average)[0];
-        }
-
-        return logo;
-      };
-
-      const bestLogo = getBestLogo(imagesData.logos);
-
-      return {
-        ...movieData,
-        logo_path: bestLogo ? bestLogo.file_path : null,
-      };
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
+      );
+      return res.json();
     },
     movieGenres: async () => {
       const res = await fetch(
