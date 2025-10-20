@@ -103,18 +103,37 @@ const resolvers = {
         fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`),
         fetch(`${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`),
       ]);
-      
+
       const [movieData, imagesData] = await Promise.all([
         movieRes.json(),
         imagesRes.json(),
       ]);
 
-      // Get the first logo if available
-      const logo = imagesData.logos && imagesData.logos[0];
-      
+      // Función para seleccionar el mejor logo
+      const getBestLogo = (logos) => {
+        if (!logos || logos.length === 0) return null;
+
+        // Primero intentamos encontrar un logo en español
+        let logo = logos.find((l) => l.iso_639_1 === "es");
+
+        // Si no hay en español, buscamos en inglés
+        if (!logo) {
+          logo = logos.find((l) => l.iso_639_1 === "en");
+        }
+
+        // Si no hay en español ni inglés, tomamos el que tenga mejor puntuación
+        if (!logo) {
+          logo = logos.sort((a, b) => b.vote_average - a.vote_average)[0];
+        }
+
+        return logo;
+      };
+
+      const bestLogo = getBestLogo(imagesData.logos);
+
       return {
         ...movieData,
-        logo_path: logo ? logo.file_path : null,
+        logo_path: bestLogo ? bestLogo.file_path : null,
       };
     },
     movieGenres: async () => {
