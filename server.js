@@ -38,6 +38,7 @@ const typeDefs = `#graphql
     popularity: Float
     vote_count: Int
     original_title: String
+    logo_path: String
   }
 
   type Genre {
@@ -98,10 +99,23 @@ const resolvers = {
       return data.results;
     },
     movieById: async (_, { id }) => {
-      const res = await fetch(
-        `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
-      );
-      return res.json();
+      const [movieRes, imagesRes] = await Promise.all([
+        fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`),
+        fetch(`${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`),
+      ]);
+      
+      const [movieData, imagesData] = await Promise.all([
+        movieRes.json(),
+        imagesRes.json(),
+      ]);
+
+      // Get the first logo if available
+      const logo = imagesData.logos && imagesData.logos[0];
+      
+      return {
+        ...movieData,
+        logo_path: logo ? logo.file_path : null,
+      };
     },
     movieGenres: async () => {
       const res = await fetch(
