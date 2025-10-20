@@ -52,7 +52,7 @@ const typeDefs = `#graphql
     topRatedMovies: [Movie]
     upcomingMovies: [Movie]
     searchMovies(query: String!): [Movie]
-    movieById(id: ID!): [Movie]
+    movieById(id: ID!): Movie
     getMovieVideos(movieId: ID!): [MovieVideo]
   }
 `;
