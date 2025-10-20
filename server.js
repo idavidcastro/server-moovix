@@ -64,6 +64,42 @@ const typeDefs = `#graphql
     name: String
   }
 
+ type ProductionCompany {
+    id: Int
+    name: String
+    logo_path: String
+    origin_country: String
+  }
+
+  type ProductionCountry {
+    iso_3166_1: String
+    name: String
+  }
+
+  type SpokenLanguage {
+    iso_639_1: String
+    name: String
+  }  
+
+  type MovieDetails {
+    id: ID!
+    title: String
+    overview: String
+    release_date: String
+    runtime: Int
+    status: String
+    tagline: String
+    budget: Int
+    revenue: Int
+    poster_path: String
+    backdrop_path: String
+    vote_average: Float
+    genres: [Genre]
+    production_companies: [ProductionCompany]
+    production_countries: [ProductionCountry]
+    spoken_languages: [SpokenLanguage]
+  }
+
   type Query {
     movieGenres: [Genre]
     popularMovies: [Movie]
@@ -74,6 +110,7 @@ const typeDefs = `#graphql
     movieById(id: ID!): Movie
     getMovieVideos(movieId: ID!): [MovieVideo]
     movieCredits(id: ID!): MovieCredits
+    movieDetails(id: ID!): MovieDetails
   }
 `;
 
@@ -143,6 +180,12 @@ const resolvers = {
       );
       const data = await res.json();
       return data; // ya tiene "cast" y "crew"
+    },
+    movieDetails: async (_, { id }) => {
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
+      );
+      return res.json();
     },
   },
 };
