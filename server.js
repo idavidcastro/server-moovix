@@ -17,22 +17,12 @@ if (!API_KEY) {
 }
 
 const typeDefs = `#graphql
-  type Movie {
-  id: ID
-  title: String
-  overview: String
-  release_date: String
-  poster_path: String
-  backdrop_path: String
-  vote_average: Float
-  vote_count: Int
-  popularity: Float
-  adult: Boolean
-  genre_ids: [Int]
-  original_language: String
-  original_title: String
-}
-
+  type MovieVideo {
+    key: String
+    name: String
+    site: String
+    type: String
+  }
 
   type CastMember {
     id: ID
@@ -48,61 +38,25 @@ const typeDefs = `#graphql
     department: String
   }
 
-  type MovieVideo {
-    key: String
-    name: String
-    site: String
-    type: String
-  }
-
-  type ProductionCompany {
-    id: Int
-    name: String
-    logo_path: String
-    origin_country: String
-  }
-
-  type ProductionCountry {
-    iso_3166_1: String
-    name: String
-  }
-
-  type SpokenLanguage {
-    iso_639_1: String
-    name: String
-  }
-
-  type MovieDetails {
-    id: ID!
-    title: String
-    overview: String
-    release_date: String
-    runtime: Int
-    budget: Int
-    revenue: Int
-    status: String
-    tagline: String
-    poster_path: String
-    backdrop_path: String
-    genres: [Genre]
-    vote_average: Float
-    vote_count: Int
-    popularity: Float
-    homepage: String
-    production_companies: [ProductionCompany]
-    production_countries: [ProductionCountry]
-    spoken_languages: [SpokenLanguage]
-    credits: MovieCredits
-    videos: MovieVideos
-  }
-
   type MovieCredits {
     cast: [CastMember]
     crew: [CrewMember]
   }
 
-  type MovieVideos {
-    results: [MovieVideo]
+  type Movie {
+    id: ID!
+    title: String
+    overview: String
+    release_date: String
+    poster_path: String
+    vote_average: Float
+    backdrop_path: String
+    adult: String
+    genre_ids: [Int]
+    original_language: String
+    popularity: Float
+    vote_count: Int
+    original_title: String
   }
 
   type Genre {
@@ -111,13 +65,15 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    movieById(id: ID!): MovieDetails
     movieGenres: [Genre]
     popularMovies: [Movie]
     nowPlayingMovies: [Movie]
     topRatedMovies: [Movie]
     upcomingMovies: [Movie]
     searchMovies(query: String!): [Movie]
+    movieById(id: ID!): Movie
+    getMovieVideos(movieId: ID!): [MovieVideo]
+    movieCredits(id: ID!): MovieCredits
   }
 `;
 
@@ -163,12 +119,10 @@ const resolvers = {
     },
     movieById: async (_, { id }) => {
       const res = await fetch(
-        `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES&append_to_response=credits,videos`
+        `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
       );
-      const data = await res.json();
-      return data;
+      return res.json();
     },
-
     movieGenres: async () => {
       const res = await fetch(
         `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=es-ES`
