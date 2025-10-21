@@ -205,12 +205,27 @@ const resolvers = {
       );
       return res.json();
     },
+    // movieImages: async (_, { id }) => {
+    //   const res = await fetch(
+    //     `${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`
+    //   );
+    //   const data = await res.json();
+    //   return data; // contiene { backdrops, logos, posters }
+    // },
     movieImages: async (_, { id }) => {
       const res = await fetch(
         `${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`
       );
       const data = await res.json();
-      return data; // contiene { backdrops, logos, posters }
+
+      // Filtramos logos en español
+      const logosES = data.logos.filter((logo) => logo.iso_639_1 === "es");
+
+      // Si no hay en español, puedes devolver en inglés como fallback
+      return {
+        ...data,
+        logos: logosES.length > 0 ? logosES : data.logos,
+      };
     },
   },
 };
