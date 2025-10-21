@@ -81,6 +81,23 @@ const typeDefs = `#graphql
     name: String
   }  
 
+  type MovieImage {
+    aspect_ratio: Float
+    file_path: String
+    height: Int
+    iso_639_1: String
+    vote_average: Float
+    vote_count: Int
+    width: Int
+  }
+
+  type MovieImages {
+    backdrops: [MovieImage]
+    logos: [MovieImage]
+    posters: [MovieImage]
+  }
+
+
   type MovieDetails {
     id: ID!
     title: String
@@ -111,6 +128,7 @@ const typeDefs = `#graphql
     getMovieVideos(movieId: ID!): [MovieVideo]
     movieCredits(id: ID!): MovieCredits
     movieDetails(id: ID!): MovieDetails
+    movieImages(id: ID!): MovieImages
   }
 `;
 
@@ -186,6 +204,13 @@ const resolvers = {
         `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=es-ES`
       );
       return res.json();
+    },
+    movieImages: async (_, { id }) => {
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}/images?api_key=${API_KEY}`
+      );
+      const data = await res.json();
+      return data; // contiene { backdrops, logos, posters }
     },
   },
 };
