@@ -129,6 +129,7 @@ const typeDefs = `#graphql
     movieCredits(id: ID!): MovieCredits
     movieDetails(id: ID!): MovieDetails
     movieImages(id: ID!): MovieImages
+    movieRecommendations(id: ID!): [Movie]
   }
 `;
 
@@ -226,6 +227,13 @@ const resolvers = {
         ...data,
         logos: logosES.length > 0 ? logosES : data.logos,
       };
+    },
+    movieRecommendations: async (_, { id }) => {
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}/recommendations?api_key=${API_KEY}&language=es-ES`
+      );
+      const data = await res.json();
+      return data.results;
     },
   },
 };
