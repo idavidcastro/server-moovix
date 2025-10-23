@@ -233,7 +233,7 @@ const resolvers = {
         `${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}&language=es-ES`
       );
       const data = await res.json();
-      return data.results || [];
+      return data.results;
     },
   },
 };
