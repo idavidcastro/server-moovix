@@ -51,7 +51,7 @@ const typeDefs = `#graphql
     poster_path: String
     vote_average: Float
     backdrop_path: String
-    adult: String
+    adult: Boolean
     genre_ids: [Int]
     original_language: String
     popularity: Float
@@ -111,6 +111,7 @@ const typeDefs = `#graphql
     poster_path: String
     backdrop_path: String
     vote_average: Float
+    adult: Boolean
     genres: [Genre]
     production_companies: [ProductionCompany]
     production_countries: [ProductionCountry]
