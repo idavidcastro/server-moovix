@@ -118,19 +118,21 @@ const typeDefs = `#graphql
     spoken_languages: [SpokenLanguage]
   }
 
-  type MovieReview {
-    id: ID
-    author: String
-    content: String
-    created_at: String
-    author_details: AuthorDetails
-  }
-
   type AuthorDetails {
     name: String
     username: String
     avatar_path: String
     rating: Float
+  }
+
+  type MovieReview {
+    id: ID
+    author: String
+    content: String
+    created_at: String
+    updated_at: String
+    url: String
+    author_details: AuthorDetails
   }
 
   type Query {
