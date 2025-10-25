@@ -118,6 +118,21 @@ const typeDefs = `#graphql
     spoken_languages: [SpokenLanguage]
   }
 
+  type MovieReview {
+    id: ID
+    author: String
+    content: String
+    created_at: String
+    author_details: AuthorDetails
+  }
+
+  type AuthorDetails {
+    name: String
+    username: String
+    avatar_path: String
+    rating: Float
+  }
+
   type Query {
     movieGenres: [Genre]
     popularMovies: [Movie]
@@ -131,6 +146,7 @@ const typeDefs = `#graphql
     movieDetails(id: ID!): MovieDetails
     movieImages(id: ID!): MovieImages
     movieSimilar(id: ID!): [Movie]
+    movieReviews(id: ID!): [MovieReview]
   }
 `;
 
@@ -235,6 +251,18 @@ const resolvers = {
       );
       const data = await res.json();
       return data.results;
+    },
+    movieReviews: async (_, { id }) => {
+      try {
+        const res = await fetch(
+          `${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}&language=es-ES`
+        );
+        const data = await res.json();
+        return data.results;
+      } catch (error) {
+        console.error("Error al obtener reseñas:", error);
+        return [];
+      }
     },
   },
 };
